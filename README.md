@@ -1,0 +1,2 @@
+# nvim
+Some config
