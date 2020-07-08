@@ -1,44 +1,71 @@
 set relativenumber
 set number
-
-let mapleader = "/"
-
-
-nnoremap <leader>ev :vsp $MYVIMRC<CR>
-nnoremap <leader>sv :source $MYVIMRC<CR>
+set nobackup
+set fdm=marker
+let mapleader = ","
 "**************shortcut****************
+
 "运行快捷键
 map <F5> :call CompileRunGcc()<CR>
-"注释快捷键
-"map <leader>. :call Comment()<CR>
+
 "删除行末空格
-nnoremap <leader>, :%s/\s\+$//<cr>:let @/=''<CR>
+nnoremap <leader><Space> :%s/\s\+$//<cr>:let @/=''<CR>
+
+map <C-b> :NERDTreeToggle<CR>
 "下开新行
 inoremap <leader><CR> <Esc>o
-"补全代码
-inoremap jf <Down><CR>
-noremap <C-r> :Rg<cr>
-"利用fzf快速跳转文件
-noremap <C-f> :Files<CR>
+
+noremap t ~
 noremap <C-a> ggVG
 noremap <C-s> :w!<CR>
 noremap ; $
 noremap ' ^
 
+" 括号自动补全
+inoremap ' ''<Esc>i
+inoremap " ""<Esc>i
+inoremap ( ()<Esc>i
+inoremap [ []<Esc>i
+inoremap { {<CR>}<Esc>O
+
 "**************shortcut****************
 
 
-
 " Plugins
-"
+
 call plug#begin('~/.config/nvim/autoload')
 " 注释插件
 Plug 'preservim/nerdcommenter'
+" Add spaces after comment delimiters by default
+Plug 'preservim/nerdtree'
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
 
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+"底部状态栏
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+set laststatus=2  "永远显示状态栏
+let g:airline_powerline_fonts = 1  " 支持 powerline 字体
+let g:airline#extensions#tabline#enabled = 1 " 显示窗口tab和buffer
+let g:airline_theme='moloai'  " murmur配色不错
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_left_sep = '▶'
+let g:airline_left_alt_sep = '❯'
+let g:airline_right_sep = '◀'
+let g:airline_right_alt_sep = '❮'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+call plug#end()
 
 "*************   buildin setting ******************
 
@@ -69,7 +96,6 @@ if has('mouse')
 endif
 "*************   buildin setting ******************
 
-call plug#end()
 
 
 "{ UI settings
