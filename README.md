@@ -15,22 +15,19 @@
 + markdown支持:
     + `godlygeek/tabular`
     + `plasticboy/vim-markdown`
-    + `iamcoo/mathjax-support-for-mkdp`
-    + `iamcoo/markdown-preview.vim`
 + 自动补全
     + `neoclide/coc`
         + `coc-yank`
         + `coc-tabnine`
         + `coc-python`
         + `coc-json`
+        + `coc-tsserver`
+        + `coc-go`
 
 ## 快捷键
 + 注释
     + [number],cc
     + [number],cu
-+ markdown
-    + <F8> 预览
-    + <F9> 关闭预览
 + fzf
     + <C-f> 根据文件名查找
     + <C-g> 根据关键字查找

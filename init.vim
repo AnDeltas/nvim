@@ -2,11 +2,6 @@ set fdm=marker
 let mapleader = ","
 
 " shortcut{{{
-" 预览markdown"
-nmap <silent> <F8> <Plug>MarkdownPreview
-imap <silent> <F8> <Plug>MarkdownPreview
-nmap <silent> <F9> <Plug>StopMarkdownPreview
-imap <silent> <F9> <Plug>StopMarkdownPreview
 "运行快捷键
 map <F5> :call CompileRunGcc()<CR>
 
@@ -164,8 +159,6 @@ let g:airline_symbols.branch = '⎇'
 Plug 'godlygeek/tabular' "必要插件，安装在vim-markdown前面
 Plug 'plasticboy/vim-markdown'
 let g:vim_markdown_math = 1
-Plug 'iamcco/mathjax-support-for-mkdp'
-Plug 'iamcco/markdown-preview.vim'
 "}}}
 
 call plug#end()
