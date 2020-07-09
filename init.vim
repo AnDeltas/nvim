@@ -1,15 +1,44 @@
-"设置相对行号"
-set relativenumber
-set number
-set nobackup
-"代码折叠"
 set fdm=marker
-
 let mapleader = ","
-"**************shortcut****************
 
+" shortcut{{{
+" 预览markdown"
+nmap <silent> <F8> <Plug>MarkdownPreview
+imap <silent> <F8> <Plug>MarkdownPreview
+nmap <silent> <F9> <Plug>StopMarkdownPreview
+imap <silent> <F9> <Plug>StopMarkdownPreview
 "运行快捷键
 map <F5> :call CompileRunGcc()<CR>
+
+"运行{{{
+
+func! CompileRunGcc()
+    exec "w"
+    if &filetype == 'c'
+        exec "!g++ % -o %<"
+        exec "!time ./%<"
+    elseif &filetype == 'cpp'
+        exec "!g++ % -o %<"
+        exec "!time ./%<"
+    elseif &filetype == 'java'
+        exec "!javac %"
+        exec "!time java %<"
+    elseif &filetype == 'sh'
+        :!time bash %
+    elseif &filetype == 'python'
+        exec "!time python3.8 %"
+    elseif &filetype == 'html'
+        exec "!firefox % &"
+    elseif &filetype == 'go'
+        exec "!go build %<"
+        exec "!time go run %"
+    elseif &filetype == 'mkd'
+        exec "!~/.vim/markdown.pl % > %.html &"
+        exec "!chrome %.html &"
+    endif
+endfunc
+
+"}}}
 
 "查找文件"
 noremap <C-f> :Files<cr>
@@ -18,30 +47,25 @@ noremap <C-g> :Ag<cr>
 "删除行末空格
 nnoremap <leader><Space> :%s/\s\+$//<cr>:let @/=''<CR>
 
+"打开关闭目录树
 map <C-b> :NERDTreeToggle<CR>
-"下开新行
-inoremap <leader><CR> <Esc>o
 
 noremap t ~
 noremap <C-a> ggVG
-noremap <C-s> :w!<CR>
 noremap ; $
 noremap ' ^
-
 " 括号自动补全
 inoremap ' ''<Esc>i
 inoremap " ""<Esc>i
 inoremap ( ()<Esc>i
 inoremap [ []<Esc>i
-inoremap { {<CR>}<Esc>O
+inoremap { {}<Esc>i
+"}}}
 
-"**************shortcut****************
-
-
-" Plugins
+" Plugins{{{
 
 call plug#begin('~/.config/nvim/autoload')
-" 注释插件
+"快速注释{{{
 Plug 'preservim/nerdcommenter'
 " Add spaces after comment delimiters by default
 Plug 'preservim/nerdtree'
@@ -77,6 +101,8 @@ augroup hugefile
         \ endif |
         \ unlet size
 augroup END
+"}}}
+"快速搜索fzf{{{
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -108,8 +134,10 @@ let $FZF_DEFAULT_OPTS = '--height 90% --layout=reverse --bind=alt-j:down,alt-k:u
 let $FZF_DEFAULT_COMMAND ='fdfind --hidden --follow -E ".git" -E "anaconda3" -E ".vscode" . /etc /home'
 " 打开 fzf 的方式选择 floating window
 let g:fzf_layout = { 'window': 'call OpenFloatingWin()' }
+"}}}
 
-"底部状态栏
+"底部状态栏{{{
+
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 set laststatus=2
@@ -127,14 +155,27 @@ let g:airline_right_sep = '◀'
 let g:airline_right_alt_sep = '❮'
 let g:airline_symbols.linenr = '¶'
 let g:airline_symbols.branch = '⎇'
+"}}}
 
+"markdown{{{
+Plug 'godlygeek/tabular' "必要插件，安装在vim-markdown前面
+Plug 'plasticboy/vim-markdown'
+let g:vim_markdown_math = 1
+Plug 'iamcco/mathjax-support-for-mkdp'
+Plug 'iamcco/markdown-preview.vim'
+"}}}
 
 call plug#end()
+"}}}
 
-"*************   buildin setting ******************
-
+"buildin{{{
 " Ask for confirmation when handling unsaved or read-only files
 set confirm
+
+set relativenumber
+set number
+set nobackup
+"代码折叠"
 
 " General tab settings
 set tabstop=4       " number of visual spaces per TAB
@@ -158,11 +199,9 @@ if has('mouse')
     set mouse=nv  " Enable mouse in several mode
     set mousemodel=popup  " Set the behaviour of mouse
 endif
-"*************   buildin setting ******************
+"}}}
 
-
-
-"{ UI settings
+"{{{ UI settings
 augroup MyColors
     autocmd!
     autocmd ColorScheme * call MyHighlights()
@@ -405,39 +444,10 @@ function! StatuslineTabWarning()
 
     return b:statusline_tab_warning
 endfunction
-"}
+"}}}
 
-"运行
-func! CompileRunGcc()
-    exec "w"
-    if &filetype == 'c'
-        exec "!g++ % -o %<"
-        exec "!time ./%<"
-    elseif &filetype == 'cpp'
-        exec "!g++ % -o %<"
-        exec "!time ./%<"
-    elseif &filetype == 'java'
-        exec "!javac %"
-        exec "!time java %<"
-    elseif &filetype == 'sh'
-        :!time bash %
-    elseif &filetype == 'python'
-        exec "!time python3.8 %"
-    elseif &filetype == 'html'
-        exec "!firefox % &"
-    elseif &filetype == 'go'
-        exec "!go build %<"
-        exec "!time go run %"
-    elseif &filetype == 'mkd'
-        exec "!~/.vim/markdown.pl % > %.html &"
-        exec "!chrome %.html &"
-    endif
-endfunc
+"coc config{{{
 
-
-
-
-"coc config
 " TextEdit might fail if hidden is not set.
 set hidden
 
@@ -587,3 +597,4 @@ nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+"}}}
