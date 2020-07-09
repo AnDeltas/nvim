@@ -1,2 +1,45 @@
 # nvim
-Some config
+
+## Plugins(vim-plug管理)
+
++ 快速注释:
+    + `preservim/nerdcommenter`
++ 查找文件:
+    + `junegunn/fzf`
+    + `junegunn/fzf.vim`
++ 目录树:
+    + `preservim/nerdtree`
++ 底部状态栏:
+    + `vim-airline`
+    + `vim-airline-themes`
++ markdown支持:
+    + `godlygeek/tabular`
+    + `plasticboy/vim-markdown`
+    + `iamcoo/mathjax-support-for-mkdp`
+    + `iamcoo/markdown-preview.vim`
++ 自动补全
+    + `neoclide/coc`
+        + `coc-yank`
+        + `coc-tabnine`
+        + `coc-python`
+        + `coc-json`
+
+## 快捷键
++ 注释
+    + [number],cc
+    + [number],cu
++ markdown
+    + <F8> 预览
+    + <F9> 关闭预览
++ fzf
+    + <C-f> 根据文件名查找
+    + <C-g> 根据关键字查找
++ 目录树
+    + <C-b>
++ 其他
+    + <C-a> 全选
+    + t 普通模式下转换大小写
+    + ；转到行末
+    + ‘ 转到行首
+    + za 折叠与打开折叠
+

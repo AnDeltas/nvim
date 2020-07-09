@@ -78,6 +78,8 @@ let g:NERDCompactSexyComs = 1
 " Align line-wise comment delimiters flush left instead of following code indentation
 let g:NERDDefaultAlign = 'left'
 
+"}}}
+"自动补全{{{
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " 让coc在nvim启动后500ms再启动"
 let g:coc_start_at_startup=0
@@ -102,6 +104,7 @@ augroup hugefile
         \ unlet size
 augroup END
 "}}}
+
 "快速搜索fzf{{{
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
