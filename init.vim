@@ -1,12 +1,19 @@
+"设置相对行号"
 set relativenumber
 set number
 set nobackup
+"代码折叠"
 set fdm=marker
+
 let mapleader = ","
 "**************shortcut****************
 
 "运行快捷键
 map <F5> :call CompileRunGcc()<CR>
+
+"查找文件"
+noremap <C-f> :Files<cr>
+noremap <C-g> :Ag<cr>
 
 "删除行末空格
 nnoremap <leader><Space> :%s/\s\+$//<cr>:let @/=''<CR>
@@ -48,14 +55,69 @@ let g:NERDCompactSexyComs = 1
 let g:NERDDefaultAlign = 'left'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" 让coc在nvim启动后500ms再启动"
+let g:coc_start_at_startup=0
+function! CocTimerStart(timer)
+    exec "CocStart"
+endfunction
+call timer_start(500,'CocTimerStart',{'repeat':1})
+
+"解决coc.nvim大文件卡死状况
+let g:trigger_size = 0.5 * 1048576
+
+augroup hugefile
+  autocmd!
+  autocmd BufReadPre *
+        \ let size = getfsize(expand('<afile>')) |
+        \ if (size > g:trigger_size) || (size == -2) |
+        \   echohl WarningMsg | echomsg 'WARNING: altering options for this huge file!' | echohl None |
+        \   exec 'CocDisable' |
+        \ else |
+        \   exec 'CocEnable' |
+        \ endif |
+        \ unlet size
+augroup END
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+function! OpenFloatingWin()
+    let opts = {
+        \ 'relative': 'editor',
+        \ 'row': 1,
+                                \ 'col': 71,
+        \ 'width': 71,
+        \ 'height': 37 / 2
+        \ }
+        let buf = nvim_create_buf(v:false, v:true)
+        let win = nvim_open_win(buf, v:true, opts)
+
+        call setwinvar(win, '&winhl', 'Normal:Chenfa')
+
+        setlocal
+        \ buftype=nofile
+        \ nobuflisted
+        \ bufhidden=hide
+        \ nonumber
+        \ norelativenumber
+        \ signcolumn=no
+endfunction
+
+" 让输入上方，搜索列表在下方
+let $FZF_DEFAULT_OPTS = '--height 90% --layout=reverse --bind=alt-j:down,alt-k:up,alt-i:toggle+down --border --preview "echo {} | preview.py" --preview-window=down'
+let $FZF_DEFAULT_COMMAND ='fdfind --hidden --follow -E ".git" -E "anaconda3" -E ".vscode" . /etc /home'
+" 打开 fzf 的方式选择 floating window
+let g:fzf_layout = { 'window': 'call OpenFloatingWin()' }
 
 "底部状态栏
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-set laststatus=2  "永远显示状态栏
-let g:airline_powerline_fonts = 1  " 支持 powerline 字体
-let g:airline#extensions#tabline#enabled = 1 " 显示窗口tab和buffer
-let g:airline_theme='moloai'  " murmur配色不错
+set laststatus=2
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#formatter = 'default'
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
@@ -65,6 +127,8 @@ let g:airline_right_sep = '◀'
 let g:airline_right_alt_sep = '❮'
 let g:airline_symbols.linenr = '¶'
 let g:airline_symbols.branch = '⎇'
+
+
 call plug#end()
 
 "*************   buildin setting ******************
@@ -358,7 +422,7 @@ func! CompileRunGcc()
     elseif &filetype == 'sh'
         :!time bash %
     elseif &filetype == 'python'
-        exec "!time python3.7 %"
+        exec "!time python3.8 %"
     elseif &filetype == 'html'
         exec "!firefox % &"
     elseif &filetype == 'go'
