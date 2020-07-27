@@ -15,14 +15,6 @@
 + markdown支持:
     + `godlygeek/tabular`
     + `plasticboy/vim-markdown`
-+ 自动补全
-    + `neoclide/coc`
-        + `coc-yank`
-        + `coc-tabnine`
-        + `coc-python`
-        + `coc-json`
-        + `coc-tsserver`
-        + `coc-go`
 
 ## 快捷键
 + 注释

@@ -104,7 +104,7 @@ endfunction
 
 " 让输入上方，搜索列表在下方
 let $FZF_DEFAULT_OPTS = '--height 90% --layout=reverse --bind=alt-j:down,alt-k:up,alt-i:toggle+down --border --preview "echo {} | preview.py" --preview-window=down'
-let $FZF_DEFAULT_COMMAND ='fdfind --hidden --follow -E ".git" -E "anaconda3" -E ".vscode" . /etc /home'
+let $FZF_DEFAULT_COMMAND ='fd --hidden --follow -E ".git" -E ".wine" -E ".deepinwine" -E ".vscode" . /etc /home'
 " 打开 fzf 的方式选择 floating window
 let g:fzf_layout = { 'window': 'call OpenFloatingWin()' }
 "}}}
