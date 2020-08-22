@@ -4,7 +4,6 @@ import os
 import sys
 
 
-
 def fzf_preview(rg_name):
     rg_list = rg_name.split(':')
     if len(rg_list) == 1:
